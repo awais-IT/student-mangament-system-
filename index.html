@@ -1,0 +1,238 @@
+<!-- Inheriting all linked files -->
+{% extends 'base.html' %}
+
+<!-- Body section -->
+{% block body %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="jumbotron p-3">
+        <h3>Students Fee Transactions</h3>
+
+        <table class="table table-dark">
+          <tr>
+            <th>ID</th>
+            <th>Students Name</th>
+            <th>Father Name</th>
+            <th>CNIC</th>
+            <th>Roll#</th>
+            <th>Fee</th>
+            <th></th>
+          </tr>
+
+          {% for row in all_data %}
+
+          <tr>
+            <td>{{row.id}}</td>
+            <td>{{row.name}}</td>
+            <td>{{row.fname}}</td>
+            <td>{{row.cnic}}</td>
+            <td>{{row.roll}}</td>
+            <td>{{row.fee}}</td>
+            <td>
+              <a
+                href="/update/{{row.id}}"
+                class="btn btn-secondary btn-xs"
+                data-toggle="modal"
+                data-target="#modaledit{{row.id}}"
+                >Edit</a
+              >
+              <a
+                href="/delete/{{row.id}}"
+                class="btn btn-secondary btn-xs"
+                onclick="return confirm('Are You sure To Delete ?')"
+                >Delete</a
+              >
+            </td>
+          </tr>
+
+          <!-- Model for updating Students data -->
+          <div id="modaledit{{row.id}}" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Update Students Data</h4>
+                </div>
+                <div class="modal-body">
+                  <form action="{{url_for('update')}}" method="POST">
+                    <div class="form-group">
+                      <label>Students Name</label>
+                      <input type="hidden" name="id" value="{{row.id}}" />
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="name"
+                        value="{{row.name}}"
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label>Father Name</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="fname"
+                        value="{{row.fname}}"
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label>CNIC</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="cnic"
+                        value="{{row.cnic}}"
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label>Roll #</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="roll"
+                        value="{{row.roll}}"
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label>Fee</label>
+                      <input
+                        type="number"
+                        class="form-control"
+                        name="fee"
+                        value="{{row.fee}}"
+                      />
+                    </div>
+
+                    <div class="modal-footer">
+                      <button class="btn btn-secondary" type="submit">
+                        Update
+                      </button>
+                      <button class="btn btn-secondary" data-dismiss="modal">
+                        Close
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {% endfor %}
+        </table>
+      </div>
+
+      <div class="jumbotron p-3">
+        <h3>Select Student for Fee Submition</h3>
+        <table class="table table-dark">
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Father Name</th>
+            <th>CNIC</th>
+            <th>Roll #</th>
+            <th></th>
+          </tr>
+
+          {% for row in students %}
+
+          <tr>
+            <td>{{row.student_id}}</td>
+            <td>{{row.student_name}}</td>
+            <td>{{row.student_father}}</td>
+            <td>{{row.student_cnic}}</td>
+            <td>{{row.student_roll_number}}</td>
+            <td>
+              <a
+                href="/update/{{row.student_id}}"
+                class="btn btn-secondary float-right"
+                data-toggle="modal"
+                data-target="#modalAdd{{row.student_id}}"
+                >Submit Fee</a
+              >
+            </td>
+          </tr>
+
+          <div id="modalAdd{{row.student_id}}" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Submit Fee</h4>
+                </div>
+                <div class="modal-body">
+                  <form action="{{url_for('insert')}}" method="POST">
+                    <div class="form-group">
+                      <label>Students Name</label>
+                      <input
+                        type="hidden"
+                        name="id"
+                        value="{{row.student_id}}"
+                      />
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="name"
+                        value="{{row.student_name}}"
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label>Father Name</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="fname"
+                        value="{{row.student_father}}"
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label>CNIC</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="cnic"
+                        value="{{row.student_cnic}}"
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label>Roll #</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="roll"
+                        value="{{row.student_roll_number}}"
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label>Fee</label>
+                      <input type="number" class="form-control" name="fee" />
+                    </div>
+
+                    <div class="modal-footer">
+                      <button class="btn btn-secondary" type="submit">
+                        Submit
+                      </button>
+                      <button class="btn btn-secondary" data-dismiss="modal">
+                        Close
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
